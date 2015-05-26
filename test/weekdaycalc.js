@@ -14,9 +14,11 @@ describe('Sanity check', function(){
 describe('Syntax check', function(){
   it('3 args',function(){
     expect(moment().weekdaycalc([2015,0,1],[2015,11,31],[1,2,3,4,5])).to.equal(261);
+    expect(moment().weekdaycalc([2015,2,14],[2015,2,23],[5])).to.equal(1);
+    expect(moment().weekdaycalc([2015,0,1],[2015,11,31],[0,1,2,3,4,5,6])).to.equal(365);
   });
   it('2 args',function(){
-    expect(moment([2015,0,1]).weekdaycalc([2015,11,31],[1,2,3,4,5])).to.equal(261);
+    expect(moment([2015,0,1]).weekdaycalc([2015,11,31],[1,2,3,4,5])).to.equal(261);    
   });
   it('1 arg',function(){
     expect(moment([2015,0,1]).weekdaycalc([1,2,3,4,5])).to.equal(261);
