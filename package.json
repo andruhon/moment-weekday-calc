@@ -2,9 +2,9 @@
   "name": "moment-weekday-calc",
   "version": "0.5.0",
   "description": "Weekdays calculator: calculates number of days from the given set within the given diff. For example: calculate quantity of business days in 2015 financial year starting on 1 Apr 2015",
-  "main": "moment.weekdaycalc",
+  "main": "./src/moment-weekday-calc",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha -R spec ./test/weekdaycalc.js"
+    "test": "node node_modules/mocha/bin/mocha -R spec ./test/weekdaycalc_test.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,10 @@
   "homepage": "https://github.com/andruhon/moment-weekday-calc",
   "devDependencies": {
     "chai": "^2.2.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-test": "^0.12.7",
     "mocha": "^2.2.4"
   },
   "dependencies": {
