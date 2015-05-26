@@ -1,3 +1,7 @@
+/**
+ * Weekdays calculator
+ * @author Andrei Kondratev [andrew@kondratev.pro]
+ */
 if ( typeof require !== 'undefined' )
 {
   moment = require('moment');
