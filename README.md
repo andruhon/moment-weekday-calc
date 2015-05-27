@@ -1,5 +1,3 @@
-**Still in process but it's already usible, see tests for usage examples**
-
 # Moment Weekday Calculator plugin
 This plugin will count specific weekdays in the range.
 
