@@ -4,5 +4,9 @@
   "description": "",
   "main": "index.js",
   "author": "Andrei Kondratev",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "moment": "^2.10.3",
+    "moment-weekday-calc": "^1.0.1"
+  }
 }

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Moment Range weekday conter</title>
+    <meta charset="UTF-8">
+    <title>Moment Range weekday conter</title>
 </head>
-<script src="node_modules/moment/moment.js"></script>
-<script src="src/moment-weekday-calc.js"></script>
+<script src="bower_components/moment/min/moment.min.js"></script>
+<script src="bower_components/moment-weekday-calc//build/moment-weekday-calc.min.js"></script>
 <body>
-  <h1>TODO demo</h1>
-  <div id="range">
+<h1>TODO demo</h1>
+<div id="range">
     <label for="start-date">Dates range start:</label>
     <input id="start-date" value="2015-04-01"/>
     <label for="end-date">Dates range end:</label>
     <input id="end-date" value="2016-03-31" />
-  </div>
+</div>
 
-  <div id="weekdays">
+<div id="weekdays">
     <label for="weekday-mo">mo:</label>
     <input class="weekday" id="weekday-mo" type="checkbox" value="1" checked />
     <label for="weekday-tu">tu:</label>
@@ -30,36 +30,36 @@
     <input class="weekday" id="weekday-sa" type="checkbox" value="6" />
     <label for="weekday-su">su:</label>
     <input class="weekday" id="weekday-su" type="checkbox" value="7" />
-  </div>
+</div>
 
-  <button id="calculate">Calculate</button>
+<button id="calculate">Calculate</button>
 
-  <div id="result"></div>
+<div id="result"></div>
 
-  <script>
+<script>
     var calculate = function(){
-      var startDate = document.getElementById('start-date').value;
-      var endDate = document.getElementById('end-date').value;
-      var weekdayInputs = document.getElementsByClassName('weekday');
-      var weekdays = [];
-      for (var i=0;i<weekdayInputs.length;i++) {
-        var weekdayInput = weekdayInputs[i];
-        if (weekdayInput.checked) {
-          weekdays.push(parseInt(weekdayInput.value));
+        var startDate = document.getElementById('start-date').value;
+        var endDate = document.getElementById('end-date').value;
+        var weekdayInputs = document.getElementsByClassName('weekday');
+        var weekdays = [];
+        for (var i=0;i<weekdayInputs.length;i++) {
+            var weekdayInput = weekdayInputs[i];
+            if (weekdayInput.checked) {
+                weekdays.push(parseInt(weekdayInput.value));
+            }
         }
-      }
-      document.getElementById('result').innerHTML = moment().isoWeekdayCalc(startDate,endDate,weekdays);
+        document.getElementById('result').innerHTML = moment().isoWeekdayCalc(startDate,endDate,weekdays);
     };
     document.getElementById('calculate').onclick = calculate;
     document.getElementById('start-date').onkeyup = function(e) {
-      if (e.keyCode == 13 ) {
-        document.getElementById('end-date').focus();
-        calculate();
-      }
+        if (e.keyCode == 13 ) {
+            document.getElementById('end-date').focus();
+            calculate();
+        }
     };
     document.getElementById('end-date').onkeyup = function(e) {
-      if (e.keyCode == 13 ) calculate();
-              };
-  </script>
+        if (e.keyCode == 13 ) calculate();
+    };
+</script>
 </body>
 </html>
