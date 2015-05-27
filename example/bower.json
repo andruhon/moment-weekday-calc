@@ -1,0 +1,16 @@
+{
+  "name": "example",
+  "version": "0.0.0",
+  "homepage": "https://github.com/andruhon/moment-weekday-calc",
+  "authors": [
+    "Andrei Kondratev"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

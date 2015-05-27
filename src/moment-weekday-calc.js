@@ -101,7 +101,7 @@
   };
 
   /**
-   * Calculate weekdays with moment#isoWeekdays function, where 1 is always Monday and 7 is always Sunday
+   * Calculate weekdays with moment#isoWeekdays function, where 1 is always monday and 7 is always Sunday
    */
   moment.fn.isoWeekdayCalc = function(){
     var args = extractArgs(this,arguments);
@@ -109,4 +109,9 @@
     var calc =  WeekDayCalc.construct(args);
     return calc.calculate();
   };
+
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = WeekDayCalc :
+    typeof define === 'function' && define.amd ? define(WeekDayCalc) :
+      this.WeekDayCalc = WeekDayCalc;
+
 })(moment);
