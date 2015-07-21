@@ -30,7 +30,14 @@ moment().isoWeekdayCalc({
   exclusions: ['6 Apr 2015','7 Apr 2015']  
 }) //260
 ```
-
+```JavaScript
+moment().weekdayCalc({  
+  rangeStart: '1 Apr 2015',  
+  rangeEnd: '31 Mar 2016',  
+  weekdays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],  
+  exclusions: ['6 Apr 2015','7 Apr 2015']  
+}) //260 //It works, however it is recommended to use numerical weekdays
+```
 
 Count all Mondays and Tuesdays of 2015 calendar year:  
 ```moment('2015').weekdayCalc([1,2]); //104```  
@@ -112,9 +119,8 @@ Calculate specified weekdays for dates range excluding particular dates (object 
 
 **rangeEnd** - the range end
 
-**weekdays** - array of locale aware weekday numbers as integers, for example [1, 2, 3]
-please notice that range may be 1-7 or 0-6 depending on locale,
-Sunday may be 0 or 7, depending on locale, monday is usualy 1
+**weekdays** - array of locale aware weekday numbers as integers or locale weekday strings, for example [1, 2, 3]
+please notice that range is or 0-6 depending where 0 is Sunday
 
 **exclusions** - array of dates to exclude, any moment() acceptable date
 

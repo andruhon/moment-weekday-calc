@@ -11,37 +11,38 @@
   function WeekDayCalc (rangeStart,rangeEnd,weekdays,exclusions,useIsoWeekday) {
     this.rangeStart = moment(rangeStart);
     this.rangeEnd = moment(rangeEnd);
-    this.weekdays = weekdays;
     this.exclusions = exclusions;
     this.useIsoWeekday = (useIsoWeekday==true);
     if(this.rangeStart.isAfter(this.rangeEnd)) {
       throw new WeekDayCalcException('rangeStart is after rangeEnd');
     }
+    this.weekdays = this.parseWeekdays(weekdays);
+  }
+
+  WeekDayCalc.prototype.parseWeekdays = function(weekdays) {
+    var validWeekdays = [];
     if (!weekdays) {
       throw new WeekDayCalcException('weekdays must be defined');
     }
-    this.validateWeekdays();
-  }
-
-  WeekDayCalc.prototype.validateWeekdays = function() {
-    var validWeekdays = [];
-    if (this.weekdays) {
-      if (this.weekdays.length > 7) {
-        throw new WeekDayCalcException("Weekdays array exceeding week length of 7 days");
-      }
-      for (var i=0;i<this.weekdays.length;i++) {
-        var weekday = parseInt(this.weekdays[i]);
-        if (validWeekdays.indexOf(weekday)>=0) {
-          throw new WeekDayCalcException("Weekdays set contains duplicate weekday");
-        }
-        if (this.useIsoWeekday) {
-          if (weekday<1 || weekday>7) throw new WeekDayCalcException("The weekday is out of 1 to 7 range");
-        } else {
-          if (weekday<0 || weekday>6) throw new WeekDayCalcException("The weekday is out of 0 to 6 range");
-        }
-        validWeekdays.push(weekday);
-      }
+    if (weekdays.length > 7) {
+      throw new WeekDayCalcException("Weekdays array exceeding week length of 7 days");
     }
+    for (var i=0;i<weekdays.length;i++) {
+      var weekday = weekdays[i];
+      if (this.useIsoWeekday) {
+        if (isNaN(weekday)) throw new WeekDayCalcException("isoWeekDayCalc accepts weekdays as numbers only, try using weekdayCalc if you need a locale aware behaviour");
+        if (weekday<1 || weekday>7) throw new WeekDayCalcException("The weekday is out of 1 to 7 range");
+      } else if(!isNaN(weekday)){
+        if (weekday<0 || weekday>6) throw new WeekDayCalcException("The weekday is out of 0 to 6 range");
+      } else {
+        weekday = moment().day(weekday).weekday();
+      }
+      if (validWeekdays.indexOf(weekday)>=0) {
+        throw new WeekDayCalcException("Weekdays set contains duplicate weekday");
+      }
+      validWeekdays.push(weekday);
+    }
+    return validWeekdays;
   };
 
   WeekDayCalc.prototype.calculate = function() {

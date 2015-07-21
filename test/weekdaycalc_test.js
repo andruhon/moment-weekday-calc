@@ -90,7 +90,7 @@ describe('Weekdays validation', function(){
   });
   it('Out of range',function(){
     var duplicate = function(){
-      return moment([2015,0,1]).weekdayCalc([2015,11,31],[-1]);
+      return new WeekDayCalc([2015,0,1],[2015,11,31],[-1],null,true);
     };
     expect(duplicate).to.throw(/weekday is out of/);
   });
