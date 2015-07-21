@@ -78,12 +78,14 @@ Calculate specified weekdays for the whole current calendar year:
 ```moment().isoWeekdayCalc(weekdays Array);```
 
 Calculate specified weekdays for dates range excluding particular dates (object config):  
-```moment().isoWeekdayCalc({
+```JavaScript
+moment().isoWeekdayCalc({
   rangeStart: moment|Date|String, //optional  
   rangeEnd: moment|Date|String, //required  
   weekdays: weekdays Array, //required  
   exclusions: exclusions Array //optional  
-});```
+});
+```
 
 **rangeStart** - the range start
 
@@ -108,12 +110,14 @@ Calculate specified weekdays for the whole current calendar year:
 ```moment().weekdayCalc(weekdays Array);```
 
 Calculate specified weekdays for dates range excluding particular dates (object config):  
-```moment().weekdayCalc({
+```JavaScript
+moment().weekdayCalc({
   rangeStart: moment|Date|String, //optional  
   rangeEnd: moment|Date|String, //required  
   weekdays: weekdays Array, //required  
   exclusions: exclusions Array //optional  
-});```
+});
+```
 
 **rangeStart** - the range start
 
