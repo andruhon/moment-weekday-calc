@@ -125,7 +125,7 @@
   };
 
   var parseExclusions = function(exclusions) {
-    var str_exclusions = []
+    var str_exclusions = [];
     if (exclusions) {
       while(exclusions.length>0) {
         str_exclusions.push(moment(exclusions.shift()).format("YYYY-MM-DD"));
