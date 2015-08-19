@@ -3,18 +3,22 @@ This plugin will count specific weekdays in the range, calculate how many calend
 
 # Usage
 Count all weekdays in the range:  
-```moment().weekdayCalc('1 Apr 2015','31 Mar 2016',[0,1,2,3,4,5,6]); //366, here Sunday is 0```  
-```moment().isoWeekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5,6,7]); //366, here Sunday is 7```  
+```JavaScript
+moment().weekdayCalc('1 Apr 2015','31 Mar 2016',[0,1,2,3,4,5,6]); //366, here Sunday is 0  
+moment().isoWeekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5,6,7]); //366, here Sunday is 7  
+```
 please notice that **weekdays in the array must be integers**, NOT strings like '1', '2'
 
 Count all Monday to Friday workdays of 2015-2016 financial year:  
-```moment().weekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5]); //262```  
-```moment().isoWeekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5]); //262```
+```JavaScript
+moment().weekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5]); //262  
+moment().isoWeekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5]); //262  
+```
 
 Count all Monday to Friday workdays except particular holidays:  
-```moment().weekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5],['6 Apr 2015','7 Apr 2015']); //260```  
-```moment().isoWeekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5],['6 Apr 2015','7 Apr 2015']); //260```
 ```JavaScript
+moment().weekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5],['6 Apr 2015','7 Apr 2015']); //260  
+moment().isoWeekdayCalc('1 Apr 2015','31 Mar 2016',[1,2,3,4,5],['6 Apr 2015','7 Apr 2015']); //260  
 moment().weekdayCalc({  
   rangeStart: '1 Apr 2015',  
   rangeEnd: '31 Mar 2016',  
@@ -40,32 +44,46 @@ moment().weekdayCalc({
 ```
 
 Count all Mondays and Tuesdays of 2015 calendar year:  
-```moment('2015').weekdayCalc([1,2]); //104```  
-```moment('2015').isoWeekdayCalc([1,2]); //104 ```
+```JavaScript
+moment('2015').weekdayCalc([1,2]); //104  
+moment('2015').isoWeekdayCalc([1,2]); //104  
+```
 
 Count all Fridays in the range:  
-```moment('14 Feb 2014').weekdayCalc('23 Feb 2014',[5]); //2 ```  
-```moment('14 Feb 2014').isoWeekdayCalc('23 Feb 2014',[5]); //2 ```
+```JavaScript
+moment('14 Feb 2014').weekdayCalc('23 Feb 2014',[5]); //2  
+moment('14 Feb 2014').isoWeekdayCalc('23 Feb 2014',[5]); //2  
+```
   
 Calculate when is it 5 business days from now:  
-```moment().addWorkdays(5); //Will find a date within 5 business days from now```  
+```JavaScript
+moment().addWorkdays(5); //Will find a date within 5 business days from now  
+```
 
 Calculate when is it 10 business days from 19 Aug 2015, excluding Aug 26:  
-```moment('2015-08-19').addWorkdays(10, ['2015-08-26']); //2015-09-03```  
+```JavaScript
+moment('2015-08-19').addWorkdays(10, ['2015-08-26']); //2015-09-03  
+```
 
 How many calendar days within 5 business days from 19 Aug:  
-```moment('2015-08-19').workdaysToCalendarDays(5); //7```  
+```JavaScript
+moment('2015-08-19').workdaysToCalendarDays(5); //7  
+```
 
 How many calendar days within 10 business days from 19 Aug excluding Aug 26:  
-```moment('2015-08-19').workdaysToCalendarDays(10, ['2015-08-26']); //15```  
+```JavaScript
+moment('2015-08-19').workdaysToCalendarDays(10, ['2015-08-26']); //15  
+```
 
 Add 5 working days to Feb 2 if Sunday is working day:  
-```moment('2015-02-02').addWeekdaysFromSet(5, [0,1,2,3,4,5]); //2015-02-08```  
-```moment('2015-02-02').isoAddWeekdaysFromSet(5, [1,2,3,4,5,7]); //2015-02-08 iso format, sunday is 7```  
+```JavaScript
+moment('2015-02-02').addWeekdaysFromSet(5, [0,1,2,3,4,5]); //2015-02-08  
+moment('2015-02-02').isoAddWeekdaysFromSet(5, [1,2,3,4,5,7]); //2015-02-08 iso format, sunday is 7  
+```
 
 Add 5 working days to May 4 excluding May 9 if Saturday is working day:  
-```moment('2015-05-04').isoAddWeekdaysFromSet(5, [1,2,3,4,5,6], ['2015-05-09']); //2015-05-11```  
 ```JavaScript
+moment('2015-05-04').isoAddWeekdaysFromSet(5, [1,2,3,4,5,6], ['2015-05-09']); //2015-05-11  
 moment('2015-05-04').isoAddWeekdaysFromSet({  
   'workdays': 5,  
   'weekdays': [1,2,3,4,5,6],  
@@ -74,9 +92,9 @@ moment('2015-05-04').isoAddWeekdaysFromSet({
 ```
 
 How many calendar days within 11 days from set of We,Th,Fr,Sa,Su from Oct 05:
-```moment('2015-10-05').weekdaysFromSetToCalendarDays(11,[0,3,4,5,6]) //16```  
-```moment('2015-10-05').isoWeekdaysFromSetToCalendarDays(11,[3,4,5,6,7]) //16 iso format, sunday is 7```  
 ```JavaScript
+moment('2015-10-05').weekdaysFromSetToCalendarDays(11,[0,3,4,5,6]) //16  
+moment('2015-10-05').isoWeekdaysFromSetToCalendarDays(11,[3,4,5,6,7]) //16 iso format, sunday is 7  
 expect(moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({  
   'workdays': 11,  
   'weekdays': [3,4,5,6,7]  
@@ -84,9 +102,9 @@ expect(moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({
 ```
 
 How many calendar days within 11 days from set of We,Th,Fr,Sa,Su, excluding Oct 15 from Oct 05:
-```moment('2015-10-05').weekdaysFromSetToCalendarDays(11, [0,3,4,5,6], ['2015-10-15']) //17```  
-```moment('2015-10-05').isoWeekdaysFromSetToCalendarDays(11, [3,4,5,6,7], ['2015-10-15']) //17 iso format, sunday is 7```  
 ```JavaScript
+moment('2015-10-05').weekdaysFromSetToCalendarDays(11, [0,3,4,5,6], ['2015-10-15']) //17  
+moment('2015-10-05').isoWeekdaysFromSetToCalendarDays(11, [3,4,5,6,7], ['2015-10-15']) //17 iso format, sunday is 7  
 expect(moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({  
   'workdays': 11,  
   'weekdays': [3,4,5,6,7],  
@@ -95,12 +113,13 @@ expect(moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({
 ```
 
 Node "Standalone" usage (it is not actually standalone, just uses moment as inner dependency):  
-```WeekDayCalc = require('moment-weekday-calc);```  
-```var useIsoWeekdays = true;```  
-```var exclusions = ['6 Apr 2015','7 Apr 2015'];```  
-```var calc = new WeekDayCalc('1 Jan 2015', '31 Dec 2015', [1,2,3,4,5,6,7], useIsoWeekdays);```  
-```var result = calc.calculate(); //363```
-
+```JavaScript
+WeekDayCalc = require('moment-weekday-calc);  
+var useIsoWeekdays = true;  
+var exclusions = ['6 Apr 2015','7 Apr 2015'];  
+var calc = new WeekDayCalc('1 Jan 2015', '31 Dec 2015', [1,2,3,4,5,6,7], useIsoWeekdays);  
+var result = calc.calculate(); //363  
+```
 
 #Installation
 
@@ -114,16 +133,24 @@ Node "Standalone" usage (it is not actually standalone, just uses moment as inne
 ##weekdayCalc
 ### iso weekdays weekdayCalc
 Calculate specified weekdays for dates range excluding particular dates:  
-```moment().isoWeekdayCalc(rangeStart moment|Date|String, rangeEnd moment|Date|String, weekdays Array, exclusions Array);```
+```JavaScript
+moment().isoWeekdayCalc(rangeStart moment|Date|String, rangeEnd moment|Date|String, weekdays Array, exclusions Array);
+```
 
 Calculate specified weekdays for dates range:  
-```moment().isoWeekdayCalc(rangeStart moment|Date|String, rangeEnd moment|Date|String, weekdays Array);```
+```JavaScript
+moment().isoWeekdayCalc(rangeStart moment|Date|String, rangeEnd moment|Date|String, weekdays Array);
+```
 
 Calculate specified weekdays for dates range:  
-```moment(rangeStart moment|Date|String).weekdayCalc(rangeEnd moment|Date|String, weekdays Array);```
+```JavaScript
+moment(rangeStart moment|Date|String).weekdayCalc(rangeEnd moment|Date|String, weekdays Array);
+```
 
 Calculate specified weekdays for the whole current calendar year:  
-```moment().isoWeekdayCalc(weekdays Array);```
+```JavaScript
+moment().isoWeekdayCalc(weekdays Array);
+```
 
 Calculate specified weekdays for dates range excluding particular dates (object config):  
 ```JavaScript
@@ -146,16 +173,24 @@ moment().isoWeekdayCalc({
 
 ### locale aware weekdayCalc
 Calculate specified weekdays for dates range excluding particular dates:  
-```moment().weekdayCalc(rangeStart moment|Date|String, rangeEnd moment|Date|String, weekdays Array, exclusions Array);```
+```JavaScript
+moment().weekdayCalc(rangeStart moment|Date|String, rangeEnd moment|Date|String, weekdays Array, exclusions Array);
+```
 
 Calculate specified weekdays for dates range:  
-```moment().weekdayCalc(rangeStart moment|Date|String, rangeEnd moment|Date|String, weekdays Array);```
+```JavaScript
+moment().weekdayCalc(rangeStart moment|Date|String, rangeEnd moment|Date|String, weekdays Array);
+```
 
 Calculate specified weekdays for dates range:  
-```moment(rangeStart moment|Date|String).weekdayCalc(rangeEnd moment|Date|String, weekdays Array);```
+```JavaScript
+moment(rangeStart moment|Date|String).weekdayCalc(rangeEnd moment|Date|String, weekdays Array);
+```
 
 Calculate specified weekdays for the whole current calendar year:  
-```moment().weekdayCalc(weekdays Array);```
+```JavaScript
+moment().weekdayCalc(weekdays Array);
+```
 
 Calculate specified weekdays for dates range excluding particular dates (object config):  
 ```JavaScript
@@ -178,25 +213,33 @@ please notice that range is or 0-6 depending where 0 is Sunday
 
 Please be aware that you may receive unexpected results if you use weekdays not matching your locale,
 for example, if your locale weekdays range is 0-6:  
-```moment().weekdayCalc('1 Jan 2015','31 Dec 2015',[1,2,3,4,5,6,7]);```// will throw new WeekDayCalcException("The weekday is out of 0 to 6 range")
+```JavaScript
+moment().weekdayCalc('1 Jan 2015','31 Dec 2015',[1,2,3,4,5,6,7]); // will throw new WeekDayCalcException("The weekday is out of 0 to 6 range")
+```
 
 Please visit http://momentjs.com/docs/#/get-set/weekday/ for MomentJS reference.
 
 ## DaysSetConverter (WorkDays converter)
 Get a date of workdaysToAdd from dateStart:  
-```moment(dateStart moment|Date|String).addWorkdays(workdaysToAdd int)```  
+```JavaScript
+moment(dateStart moment|Date|String).addWorkdays(workdaysToAdd int)
+```  
 
 Get a date of workdaysToAdd from dateStart excluding dates from exclusions array:  
-```moment(dateStart moment|Date|String).addWorkdays(workdaysToAdd int, exclusions Array)```  
+```JavaScript
+moment(dateStart moment|Date|String).addWorkdays(workdaysToAdd int, exclusions Array)
+```
 
 Convert working/business days into calendar days:  
-```moment(dateStart moment|Date|String).workdaysToCalendarDays(workdaysToAdd int)```  
-```moment(dateStart moment|Date|String).workdaysToCalendarDays(workdaysToAdd int, exclusions Array)```  
+```JavaScript
+moment(dateStart moment|Date|String).workdaysToCalendarDays(workdaysToAdd int)  
+moment(dateStart moment|Date|String).workdaysToCalendarDays(workdaysToAdd int, exclusions Array)
+```  
 
 Get a date of workdaysToAdd from dateStart, here workdays are any weekdays from weekdays array:  
-```moment(dateStart moment|Date|String).addWeekdaysFromSet(workdaysToAdd int, weekdays Array)```  
-```moment(dateStart moment|Date|String).addWeekdaysFromSet(workdaysToAdd int, weekdays Array, exclusions Array)```  
 ```JavaScript
+moment(dateStart moment|Date|String).addWeekdaysFromSet(workdaysToAdd int, weekdays Array)  
+moment(dateStart moment|Date|String).addWeekdaysFromSet(workdaysToAdd int, weekdays Array, exclusions Array)  
 moment(dateStart moment|Date|String).addWeekdaysFromSet({  
   'workdays': int, //required, it is also possible to use 'days' alias  
   'weekdays': weekdays Array, //optional  
@@ -205,9 +248,9 @@ moment(dateStart moment|Date|String).addWeekdaysFromSet({
 ```
 
 The same as above but with weekdays in iso format:
-```moment(dateStart moment|Date|String).isoAddWeekdaysFromSet(workdaysToAdd int, weekdays Array)```  
-```moment(dateStart moment|Date|String).isoAddWeekdaysFromSet(workdaysToAdd int, weekdays Array, exclusions Array)```  
 ```JavaScript
+moment(dateStart moment|Date|String).isoAddWeekdaysFromSet(workdaysToAdd int, weekdays Array)  
+moment(dateStart moment|Date|String).isoAddWeekdaysFromSet(workdaysToAdd int, weekdays Array, exclusions Array)  
 moment(dateStart moment|Date|String).isoAddWeekdaysFromSet({  
   'workdays': int, //required, it is also possible to use 'days' alias  
   'weekdays': weekdays Array, //optional  
@@ -216,9 +259,9 @@ moment(dateStart moment|Date|String).isoAddWeekdaysFromSet({
 ```
 
 Convert working/business days into calendar days, here workdays are any weekdays from weekdays array:  
-```moment(dateStart moment|Date|String).weekdaysFromSetToCalendarDays(workdaysToAdd int, weekdays Array)```  
-```moment(dateStart moment|Date|String).weekdaysFromSetToCalendarDays(workdaysToAdd int, weekdays Array, exclusions Array)```  
 ```JavaScript
+moment(dateStart moment|Date|String).weekdaysFromSetToCalendarDays(workdaysToAdd int, weekdays Array)  
+moment(dateStart moment|Date|String).weekdaysFromSetToCalendarDays(workdaysToAdd int, weekdays Array, exclusions Array)  
 moment(dateStart moment|Date|String).weekdaysFromSetToCalendarDays({  
   'workdays': int, //required, it is also possible to use 'days' alias  
   'weekdays': weekdays Array, //optional  
@@ -227,9 +270,9 @@ moment(dateStart moment|Date|String).weekdaysFromSetToCalendarDays({
 ```
 
 The same as above but with weekdays in iso format:  
-```moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays(workdaysToAdd int, weekdays Array)```  
-```moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays(workdaysToAdd int, weekdays Array, exclusions Array)```  
 ```JavaScript
+moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays(workdaysToAdd int, weekdays Array)  
+moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays(workdaysToAdd int, weekdays Array, exclusions Array)  
 moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays({  
   'workdays': int, //required, it is also possible to use 'days' alias  
   'weekdays': weekdays Array, //optional  
@@ -237,6 +280,6 @@ moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays({
 })  
 ```
 
-**dateStart** - the date from which to start weekdays conversion, it is NOW if omitted
-**weekdays** - array of locale aware weekday numbers range of 0-6 or 1-7 for iso prefixed functions
-**exclusions** - array of dates to exclude, any moment() acceptable date
+**dateStart** - the date from which to start weekdays conversion, it is NOW if omitted  
+**weekdays** - array of locale aware weekday numbers range of 0-6 or 1-7 for iso prefixed functions  
+**exclusions** - array of dates to exclude, any moment() acceptable date  
