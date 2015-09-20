@@ -54,6 +54,8 @@ Count all Fridays in the range:
 moment('14 Feb 2014').weekdayCalc('23 Feb 2014',[5]); //2  
 moment('14 Feb 2014').isoWeekdayCalc('23 Feb 2014',[5]); //2  
 ```
+
+It is also **possible to subtract** days with all "add" functions by passing a negative value.  
   
 Calculate when is it 5 business days from now:  
 ```JavaScript
@@ -79,6 +81,7 @@ Add 5 working days to Feb 2 if Sunday is working day:
 ```JavaScript
 moment('2015-02-02').addWeekdaysFromSet(5, [0,1,2,3,4,5]); //2015-02-08  
 moment('2015-02-02').isoAddWeekdaysFromSet(5, [1,2,3,4,5,7]); //2015-02-08 iso format, sunday is 7  
+moment('2015-02-02').isoAddWeekdaysFromSet(-5, [1,2,3,4,5,7]) //2015-01-27  
 ```
 
 Add 5 working days to May 4 excluding May 9 if Saturday is working day:  
@@ -98,7 +101,9 @@ moment('2015-10-05').isoWeekdaysFromSetToCalendarDays(11,[3,4,5,6,7]) //16 iso f
 expect(moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({  
   'workdays': 11,  
   'weekdays': [3,4,5,6,7]  
-}); //16 
+}); //16
+// Subtract days:  
+expect(moment('2015-10-05').isoWeekdaysFromSetToCalendarDays(-11,[3,4,5,6,7])).to.equal(-15);  
 ```
 
 How many calendar days within 11 days from set of We,Th,Fr,Sa,Su, excluding Oct 15 from Oct 05:

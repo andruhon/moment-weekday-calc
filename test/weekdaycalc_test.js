@@ -118,14 +118,23 @@ describe('standalone WeekdayCalc test', function(){
 
 describe('DaysSetConverter tests', function(){
   it('add workdays',function(){
+    /* add */
     expect(moment('2015-08-19').addWorkdays(5).format('YYYY-MM-DD')).to.equal('2015-08-26');
     expect(moment('2015-08-19').addWorkdays(10, ['2015-08-26']).format('YYYY-MM-DD')).to.equal('2015-09-03');
+    /* subtract */
+    expect(moment('2015-09-21').addWorkdays(-5).format('YYYY-MM-DD')).to.equal('2015-09-14');
+    expect(moment('2015-09-21').addWorkdays(-10, ['2015-09-14']).format('YYYY-MM-DD')).to.equal('2015-09-04');
   });
   it('workdays to calendar days',function(){
+    /* add */
     expect(moment('2015-08-19').workdaysToCalendarDays(5)).to.equal(7);
     expect(moment('2015-08-19').workdaysToCalendarDays(10, ['2015-08-26'])).to.equal(15);
+    /* subtract */
+    expect(moment('2015-11-20').workdaysToCalendarDays(-5)).to.equal(-7);
+    expect(moment('2015-08-19').workdaysToCalendarDays(-10, ['2015-08-18'])).to.equal(-15);
   });
   it('add days from set',function(){
+    /* add */
     expect(moment('2015-08-19').addWeekdaysFromSet(5, [1,2,3,4,5,6]).format('YYYY-MM-DD')).to.equal('2015-08-25');
     expect(moment('2015-02-02').addWeekdaysFromSet(5, [0,1,2,3,4,5]).format('YYYY-MM-DD')).to.equal('2015-02-08');
     expect(moment('2015-02-02').isoAddWeekdaysFromSet(5, [1,2,3,4,5,7]).format('YYYY-MM-DD')).to.equal('2015-02-08');
@@ -144,8 +153,18 @@ describe('DaysSetConverter tests', function(){
       'exclusions': ['2015-02-23','2015-03-08'],
       'weekdays': [2,4,5,7]
     }).format('YYYY-MM-DD')).to.equal('2015-03-22');
+    /* subtract */
+    expect(moment('2015-08-19').addWeekdaysFromSet(-5, [1,2,3,4,5,6]).format('YYYY-MM-DD')).to.equal('2015-08-13');
+    expect(moment('2015-05-04').isoAddWeekdaysFromSet(-5, [1,2,3,4,5,6], ['2015-05-01']).format('YYYY-MM-DD')).to.equal('2015-04-27');
+    expect(moment('2015-02-02').isoAddWeekdaysFromSet(-5, [1,2,3,4,5,7]).format('YYYY-MM-DD')).to.equal('2015-01-27');
+    expect(moment('2015-02-16').isoAddWeekdaysFromSet({
+      'days': -19,
+      'exclusions': ['2015-02-15','2015-02-10'],
+      'weekdays': [2,4,5,7]
+    }).format('YYYY-MM-DD')).to.equal('2015-01-11');
   });
   it('days from set to calendar days',function(){
+    /* add */
     expect(moment('2015-08-19').weekdaysFromSetToCalendarDays(5,[1,2,3,4,5])).to.equal(7);
     expect(moment('2015-10-05').weekdaysFromSetToCalendarDays(1,[1])).to.equal(7);
     expect(moment('2015-10-05').weekdaysFromSetToCalendarDays(1,[1],['2015-10-12'])).to.equal(14);
@@ -156,6 +175,16 @@ describe('DaysSetConverter tests', function(){
       'weekdays': [3,4,5,6,7],
       'exclusions': ['2015-10-15']
     })).to.equal(17);
+    /* subtract */
+    expect(moment('2015-08-19').weekdaysFromSetToCalendarDays(-5,[1,2,3,4,5])).to.equal(-7);
+    expect(moment('2015-10-05').weekdaysFromSetToCalendarDays(-1,[1],['2015-09-28'])).to.equal(-14);
+    expect(moment('2015-10-05').weekdaysFromSetToCalendarDays(-11,[0,3,4,5,6])).to.equal(-15);
+    expect(moment('2015-10-05').isoWeekdaysFromSetToCalendarDays(-11,[3,4,5,6,7])).to.equal(-15);
+    expect(moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({
+      'workdays': -11,
+      'weekdays': [3,4,5,6,7],
+      'exclusions': ['2015-10-01']
+    })).to.equal(-16);
   });
 });
 

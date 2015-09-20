@@ -1,15 +1,17 @@
-1. Build the project:
->bower
+1. Update bower.json and package.json
 
-2. Commit changes
+2. Build the project:
+>grunt
 
-2. Push a tag  
+3. Commit changes
+
+4. Push a tag  
 >git tag -a 1.0.5 -m'1.0.5 release descr'  
 >git push origin 1.0.5
 
-3. Do a release on github:  
+5. Do a release on github:  
 tags->Add release notes onto latest
 
-4. npm publish
+6. npm publish
 
-5. the last tag is released to bower automatically
+7. the last tag is released to bower automatically
