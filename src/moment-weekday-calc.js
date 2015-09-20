@@ -81,11 +81,20 @@
     var resultDate = this.rangeStart.clone();
     var str_exclusions = parseExclusions(this.exclusions);
     var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
-    while (daysLeft>0) {
-      resultDate.add(1, 'day');
-      if ( (this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length==0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD"))<0) ) {
-        daysLeft--;
-      }
+    if (daysLeft>=0){
+        while (daysLeft > 0) {
+            resultDate.add(1, 'day');
+            if ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0)) {
+                daysLeft--;
+            }
+        }
+    } else {
+        while (daysLeft < 0) {
+            resultDate.subtract(1, 'day');
+            if ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0)) {
+                daysLeft++;
+            }
+        }
     }
     return resultDate;
   };
