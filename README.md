@@ -117,13 +117,11 @@ expect(moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({
 }); //17  
 ```
 
-Node "Standalone" usage (it is not actually standalone, just uses moment as inner dependency):  
+Node.js usage:
 ```JavaScript
-WeekDayCalc = require('moment-weekday-calc');  
-var useIsoWeekdays = true;  
-var exclusions = ['6 Apr 2015','7 Apr 2015'];  
-var calc = new WeekDayCalc('1 Jan 2015', '31 Dec 2015', [1,2,3,4,5,6,7], useIsoWeekdays);  
-var result = calc.calculate(); //363  
+moment = require('moment');     //please note that you should include moment library first
+require('moment-weekday-calc');
+console.log(moment().isoWeekdayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5,6,7]));
 ```
 
 #Installation
