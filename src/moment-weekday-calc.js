@@ -45,7 +45,7 @@
 
     while(day.valueOf()<=rangeEnd.valueOf()) {
       var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
-      var included = str_inclusions.length != 0 || str_inclusions.indexOf(day.format("YYYY-MM-DD"))>=0
+      var included = str_inclusions.length != 0 || str_inclusions.indexOf(day.format("YYYY-MM-DD"))>=0;
       if (included || ( (weekdays.indexOf(day[weekdayFunc]())>=0) && (str_exclusions.length==0 || str_exclusions.indexOf(day.format("YYYY-MM-DD"))<0) )) {
         weekDaysCount++;
       }
