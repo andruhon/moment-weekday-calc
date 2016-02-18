@@ -8,10 +8,11 @@
 }
 (function(moment) {
 
-  function WeekDayCalc (rangeStart,rangeEnd,weekdays,exclusions,useIsoWeekday) {
+  function WeekDayCalc (rangeStart,rangeEnd,weekdays,exclusions,inclusions,useIsoWeekday) {
     this.rangeStart = moment(rangeStart);
     this.rangeEnd = moment(rangeEnd);
     this.exclusions = exclusions;
+    this.inclusions = inclusions;
     this.useIsoWeekday = (useIsoWeekday==true);
     if(this.rangeStart.isAfter(this.rangeEnd)) {
       throw new WeekDayCalcException('rangeStart is after rangeEnd');
@@ -24,8 +25,8 @@
     var rangeStartWeekEnd = this.rangeStart.clone().endOf('week');
     var rangeEndWeekStart = this.rangeEnd.clone().startOf('week');
 
-    if (rangeEndWeekStart.diff(rangeStartWeekEnd,'days')<30 || this.exclusions) {
-      weekDaysCount = this.calculateIterative(this.rangeStart,this.rangeEnd,this.weekdays,this.exclusions);
+    if (rangeEndWeekStart.diff(rangeStartWeekEnd,'days')<30 || this.exclusions || this.inclusions) {
+      weekDaysCount = this.calculateIterative(this.rangeStart,this.rangeEnd,this.weekdays,this.exclusions, this.inclusions);
     } else {
       /* a little optimisation for longer time intervals - it works faster with intervals longer than one year */
       var wholeWeeksDiff = Math.round(rangeEndWeekStart.diff(rangeStartWeekEnd,'weeks',true));
@@ -37,13 +38,15 @@
     return weekDaysCount;
   };
 
-  WeekDayCalc.prototype.calculateIterative = function(rangeStart,rangeEnd,weekdays,exclusions) {
+  WeekDayCalc.prototype.calculateIterative = function(rangeStart,rangeEnd,weekdays,exclusions, inclusions) {
     var weekDaysCount = 0, day = rangeStart.clone();
     var str_exclusions = parseExclusions(exclusions);
+    var str_inclusions = parseExclusions(inclusions);
 
     while(day.valueOf()<=rangeEnd.valueOf()) {
       var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
-      if ( (weekdays.indexOf(day[weekdayFunc]())>=0) && (str_exclusions.length==0 || str_exclusions.indexOf(day.format("YYYY-MM-DD"))<0) ) {
+      var included = str_inclusions.length != 0 || str_inclusions.indexOf(day.format("YYYY-MM-DD"))>=0
+      if (included || ( (weekdays.indexOf(day[weekdayFunc]())>=0) && (str_exclusions.length==0 || str_exclusions.indexOf(day.format("YYYY-MM-DD"))<0) )) {
         weekDaysCount++;
       }
       day.add(1, 'day');
@@ -150,9 +153,12 @@
   };
 
   WeekDayCalc.calculateWeekdays = function(that, arguments, useIsoWeekday) {
-    var rangeStart, rangeEnd, weekdays, exclusions;
+    var rangeStart, rangeEnd, weekdays, exclusions, inclusions;
     useIsoWeekday = useIsoWeekday?true:false;
     switch (arguments.length) {
+      case 5:
+        exclusions = arguments[3];
+        inclusions = arguments[4];
       case 4:
         exclusions = arguments[3];
         /* Fall-through to three args */
@@ -173,6 +179,7 @@
           rangeEnd = moment(arg.rangeEnd).endOf('day');
           weekdays = arg.weekdays;
           exclusions = arg.exclusions;
+          inclusions = arg.inclusions;
         } else {
           rangeStart = that.clone().startOf('year');
           rangeEnd = that.clone().endOf('year');
@@ -188,7 +195,7 @@
       rangeEnd = trueEnd;
     }
 
-    var calc =  WeekDayCalc.construct([rangeStart, rangeEnd, weekdays, exclusions, useIsoWeekday]);
+    var calc =  WeekDayCalc.construct([rangeStart, rangeEnd, weekdays, exclusions, inclusions, useIsoWeekday]);
     return calc.calculate();
   };
 
