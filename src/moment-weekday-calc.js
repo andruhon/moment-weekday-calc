@@ -64,10 +64,11 @@
   WeekDayCalcException.prototype = new Error;
   WeekDayCalc.prototype.WeekDayCalcException = WeekDayCalcException;
   
-  function DaysSetConverter (rangeStart, weekdays, exclusions, useIsoWeekday) {
+  function DaysSetConverter (rangeStart, weekdays, exclusions, inclusions, useIsoWeekday) {
     this.rangeStart = moment(rangeStart);
     this.useIsoWeekday = (useIsoWeekday==true);
     this.exclusions = exclusions;
+    this.inclusions = inclusions;
     this.weekdays = parseWeekdays(weekdays, this.useIsoWeekday);
   }
 
@@ -80,12 +81,14 @@
     var daysLeft = daysToAdd;
     var resultDate = this.rangeStart.clone();
     var str_exclusions = parseExclusions(this.exclusions);
+    var str_inclusions = parseExclusions(this.inclusions);
     var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
     if (daysLeft>=0){
         /* positive value - add days */
         while (daysLeft > 0) {
             resultDate.add(1, 'day');
-            if ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0)) {
+            var included = str_inclusions.length != 0 || str_inclusions.indexOf(resultDate.format("YYYY-MM-DD"))>=0;
+            if (included || ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0))) {
                 daysLeft--;
             }
         }
@@ -93,7 +96,8 @@
         /* negative value - subtract days */
         while (daysLeft < 0) {
             resultDate.subtract(1, 'day');
-            if ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0)) {
+            var included = str_inclusions.length != 0 || str_inclusions.indexOf(resultDate.format("YYYY-MM-DD"))>=0;
+            if (included || ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0))) {
                 daysLeft++;
             }
         }
@@ -189,10 +193,13 @@
   };
 
   DaysSetConverter.calculateDate = function(that, arguments, useIsoWeekday) {
-    var days, exclusions, weekdaysSet;
+    var days, exclusions, inclusions, weekdaysSet;
     useIsoWeekday = useIsoWeekday?true:false;
     var rangeStart = that;
     switch (arguments.length) {
+      case 4:
+        exclusions = arguments[2];
+        inclusions = arguments[3];
       case 3:
         exclusions = arguments[2];
       /* Fall-through to two args*/
@@ -207,6 +214,7 @@
           days = arg.days?arg.days:arg.workdays;
           weekdaysSet = arg.weekdays?arg.weekdays:[1,2,3,4,5];
           exclusions = arg.exclusions;
+          inclusions = arg.inclusions;
         } else {
           days = arg;
         }
@@ -214,7 +222,7 @@
       default:
         new DaysSetConverterException('unexpected arguments length '+arguments.length+'. Expecting 1 to 3 args');
     }
-    var calc =  DaysSetConverter.construct([that, weekdaysSet, exclusions, useIsoWeekday]);
+    var calc =  DaysSetConverter.construct([that, weekdaysSet, exclusions, inclusions, useIsoWeekday]);
     return calc.calculate(days);
   };
 
