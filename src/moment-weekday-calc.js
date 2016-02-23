@@ -40,13 +40,14 @@
 
   WeekDayCalc.prototype.calculateIterative = function(rangeStart,rangeEnd,weekdays,exclusions, inclusions) {
     var weekDaysCount = 0, day = rangeStart.clone();
-    var str_exclusions = parseExclusions(exclusions);
-    var str_inclusions = parseExclusions(inclusions);
+    var str_exclusions = parseSet(exclusions);
+    var str_inclusions = parseSet(inclusions);
 
     while(day.valueOf()<=rangeEnd.valueOf()) {
       var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
-      var included = str_inclusions.length != 0 || str_inclusions.indexOf(day.format("YYYY-MM-DD"))>=0;
-      if (included || ( (weekdays.indexOf(day[weekdayFunc]())>=0) && (str_exclusions.length==0 || str_exclusions.indexOf(day.format("YYYY-MM-DD"))<0) )) {
+      var dayString = day.format("YYYY-MM-DD");
+      var included = str_inclusions.length != 0 && str_inclusions.indexOf(dayString)>=0;
+      if (included || ( (weekdays.indexOf(day[weekdayFunc]())>=0) && (str_exclusions.length==0 || str_exclusions.indexOf(dayString)<0) )) {
         weekDaysCount++;
       }
       day.add(1, 'day');
@@ -83,8 +84,8 @@
   DaysSetConverter.prototype.calculate = function(daysToAdd) {
     var daysLeft = daysToAdd;
     var resultDate = this.rangeStart.clone();
-    var str_exclusions = parseExclusions(this.exclusions);
-    var str_inclusions = parseExclusions(this.inclusions);
+    var str_exclusions = parseSet(this.exclusions);
+    var str_inclusions = parseSet(this.inclusions);
     var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
     if (daysLeft>=0){
         /* positive value - add days */
@@ -142,11 +143,11 @@
     return validWeekdays;
   };
 
-  var parseExclusions = function(exclusions) {
+  var parseSet = function(set) {
     var str_exclusions = [];
-    if (exclusions) {
-      while(exclusions.length>0) {
-        str_exclusions.push(moment(exclusions.shift()).format("YYYY-MM-DD"));
+    if (set) {
+      while(set.length>0) {
+        str_exclusions.push(moment(set.shift()).format("YYYY-MM-DD"));
       }
     }
     return str_exclusions;
@@ -252,8 +253,8 @@
    * For example 4 workdays from Wed 19 Aug 2015 is a Tue 25 Aug 2015
    * workdays set is Mon-Fri, please use addSetWeekdays if you have a different set
    */
-  moment.fn.addWorkdays = function(days, exclusions) {
-    return DaysSetConverter.calculateDate(this, [days, [1,2,3,4,5], exclusions]);
+  moment.fn.addWorkdays = function(days, exclusions, inclusions) {
+    return DaysSetConverter.calculateDate(this, [days, [1,2,3,4,5], exclusions, inclusions]);
   };
 
   /**
@@ -261,8 +262,8 @@
    * For example 4 workdays from Wed 19 Aug 2015 is 6 calendar days
    * workdays set is Mon-Fri, please use setWeekdaysToCalendarDays if you have a different set
    */
-  moment.fn.workdaysToCalendarDays = function(days, exclusions) {
-    var date = DaysSetConverter.calculateDate(this, [days, [1,2,3,4,5], exclusions]);
+  moment.fn.workdaysToCalendarDays = function(days, exclusions, inclusions) {
+    var date = DaysSetConverter.calculateDate(this, [days, [1,2,3,4,5], exclusions, inclusions]);
     return date.diff(this,'days');
   };
 
