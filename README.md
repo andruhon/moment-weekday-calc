@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/andruhon/moment-weekday-calc.svg?branch=master)](http://travis-ci.org/andruhon/moment-weekday-calc)
+
 # Moment Weekday Calculator plugin
 This plugin will count specific weekdays in the range, calculate how many calendar days in given amount workdays/business days and when is it N working days from now
 
