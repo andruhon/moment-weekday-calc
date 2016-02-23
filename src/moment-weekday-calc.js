@@ -8,10 +8,11 @@
 }
 (function(moment) {
 
-  function WeekDayCalc (rangeStart,rangeEnd,weekdays,exclusions,useIsoWeekday) {
+  function WeekDayCalc (rangeStart,rangeEnd,weekdays,exclusions,inclusions,useIsoWeekday) {
     this.rangeStart = moment(rangeStart);
     this.rangeEnd = moment(rangeEnd);
     this.exclusions = exclusions;
+    this.inclusions = inclusions;
     this.useIsoWeekday = (useIsoWeekday==true);
     if(this.rangeStart.isAfter(this.rangeEnd)) {
       throw new WeekDayCalcException('rangeStart is after rangeEnd');
@@ -24,8 +25,8 @@
     var rangeStartWeekEnd = this.rangeStart.clone().endOf('week');
     var rangeEndWeekStart = this.rangeEnd.clone().startOf('week');
 
-    if (rangeEndWeekStart.diff(rangeStartWeekEnd,'days')<30 || this.exclusions) {
-      weekDaysCount = this.calculateIterative(this.rangeStart,this.rangeEnd,this.weekdays,this.exclusions);
+    if (rangeEndWeekStart.diff(rangeStartWeekEnd,'days')<30 || this.exclusions || this.inclusions) {
+      weekDaysCount = this.calculateIterative(this.rangeStart,this.rangeEnd,this.weekdays,this.exclusions, this.inclusions);
     } else {
       /* a little optimisation for longer time intervals - it works faster with intervals longer than one year */
       var wholeWeeksDiff = Math.round(rangeEndWeekStart.diff(rangeStartWeekEnd,'weeks',true));
@@ -37,13 +38,16 @@
     return weekDaysCount;
   };
 
-  WeekDayCalc.prototype.calculateIterative = function(rangeStart,rangeEnd,weekdays,exclusions) {
+  WeekDayCalc.prototype.calculateIterative = function(rangeStart,rangeEnd,weekdays,exclusions, inclusions) {
     var weekDaysCount = 0, day = rangeStart.clone();
-    var str_exclusions = parseExclusions(exclusions);
+    var str_exclusions = parseSet(exclusions);
+    var str_inclusions = parseSet(inclusions);
 
     while(day.valueOf()<=rangeEnd.valueOf()) {
       var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
-      if ( (weekdays.indexOf(day[weekdayFunc]())>=0) && (str_exclusions.length==0 || str_exclusions.indexOf(day.format("YYYY-MM-DD"))<0) ) {
+      var dayString = day.format("YYYY-MM-DD");
+      var included = str_inclusions.length != 0 && str_inclusions.indexOf(dayString)>=0;
+      if (included || ( (weekdays.indexOf(day[weekdayFunc]())>=0) && (str_exclusions.length==0 || str_exclusions.indexOf(dayString)<0) )) {
         weekDaysCount++;
       }
       day.add(1, 'day');
@@ -64,10 +68,11 @@
   WeekDayCalcException.prototype = new Error;
   WeekDayCalc.prototype.WeekDayCalcException = WeekDayCalcException;
   
-  function DaysSetConverter (rangeStart, weekdays, exclusions, useIsoWeekday) {
+  function DaysSetConverter (rangeStart, weekdays, exclusions, inclusions, useIsoWeekday) {
     this.rangeStart = moment(rangeStart);
     this.useIsoWeekday = (useIsoWeekday==true);
     this.exclusions = exclusions;
+    this.inclusions = inclusions;
     this.weekdays = parseWeekdays(weekdays, this.useIsoWeekday);
   }
 
@@ -79,13 +84,15 @@
   DaysSetConverter.prototype.calculate = function(daysToAdd) {
     var daysLeft = daysToAdd;
     var resultDate = this.rangeStart.clone();
-    var str_exclusions = parseExclusions(this.exclusions);
+    var str_exclusions = parseSet(this.exclusions);
+    var str_inclusions = parseSet(this.inclusions);
     var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
     if (daysLeft>=0){
         /* positive value - add days */
         while (daysLeft > 0) {
             resultDate.add(1, 'day');
-            if ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0)) {
+            var included = str_inclusions.length != 0 || str_inclusions.indexOf(resultDate.format("YYYY-MM-DD"))>=0;
+            if (included || ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0))) {
                 daysLeft--;
             }
         }
@@ -93,7 +100,8 @@
         /* negative value - subtract days */
         while (daysLeft < 0) {
             resultDate.subtract(1, 'day');
-            if ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0)) {
+            var included = str_inclusions.length != 0 || str_inclusions.indexOf(resultDate.format("YYYY-MM-DD"))>=0;
+            if (included || ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0))) {
                 daysLeft++;
             }
         }
@@ -135,20 +143,23 @@
     return validWeekdays;
   };
 
-  var parseExclusions = function(exclusions) {
+  var parseSet = function(set) {
     var str_exclusions = [];
-    if (exclusions) {
-      while(exclusions.length>0) {
-        str_exclusions.push(moment(exclusions.shift()).format("YYYY-MM-DD"));
+    if (set) {
+      while(set.length>0) {
+        str_exclusions.push(moment(set.shift()).format("YYYY-MM-DD"));
       }
     }
     return str_exclusions;
   };
 
   WeekDayCalc.calculateWeekdays = function(that, arguments, useIsoWeekday) {
-    var rangeStart, rangeEnd, weekdays, exclusions;
+    var rangeStart, rangeEnd, weekdays, exclusions, inclusions;
     useIsoWeekday = useIsoWeekday?true:false;
     switch (arguments.length) {
+      case 5:
+        exclusions = arguments[3];
+        inclusions = arguments[4];
       case 4:
         exclusions = arguments[3];
         /* Fall-through to three args */
@@ -169,6 +180,7 @@
           rangeEnd = moment(arg.rangeEnd).endOf('day');
           weekdays = arg.weekdays;
           exclusions = arg.exclusions;
+          inclusions = arg.inclusions;
         } else {
           rangeStart = that.clone().startOf('year');
           rangeEnd = that.clone().endOf('year');
@@ -184,15 +196,18 @@
       rangeEnd = trueEnd;
     }
 
-    var calc =  WeekDayCalc.construct([rangeStart, rangeEnd, weekdays, exclusions, useIsoWeekday]);
+    var calc =  WeekDayCalc.construct([rangeStart, rangeEnd, weekdays, exclusions, inclusions, useIsoWeekday]);
     return calc.calculate();
   };
 
   DaysSetConverter.calculateDate = function(that, arguments, useIsoWeekday) {
-    var days, exclusions, weekdaysSet;
+    var days, exclusions, inclusions, weekdaysSet;
     useIsoWeekday = useIsoWeekday?true:false;
     var rangeStart = that;
     switch (arguments.length) {
+      case 4:
+        exclusions = arguments[2];
+        inclusions = arguments[3];
       case 3:
         exclusions = arguments[2];
       /* Fall-through to two args*/
@@ -207,6 +222,7 @@
           days = arg.days?arg.days:arg.workdays;
           weekdaysSet = arg.weekdays?arg.weekdays:[1,2,3,4,5];
           exclusions = arg.exclusions;
+          inclusions = arg.inclusions;
         } else {
           days = arg;
         }
@@ -214,7 +230,7 @@
       default:
         new DaysSetConverterException('unexpected arguments length '+arguments.length+'. Expecting 1 to 3 args');
     }
-    var calc =  DaysSetConverter.construct([that, weekdaysSet, exclusions, useIsoWeekday]);
+    var calc =  DaysSetConverter.construct([that, weekdaysSet, exclusions, inclusions, useIsoWeekday]);
     return calc.calculate(days);
   };
 
@@ -237,8 +253,8 @@
    * For example 4 workdays from Wed 19 Aug 2015 is a Tue 25 Aug 2015
    * workdays set is Mon-Fri, please use addSetWeekdays if you have a different set
    */
-  moment.fn.addWorkdays = function(days, exclusions) {
-    return DaysSetConverter.calculateDate(this, [days, [1,2,3,4,5], exclusions]);
+  moment.fn.addWorkdays = function(days, exclusions, inclusions) {
+    return DaysSetConverter.calculateDate(this, [days, [1,2,3,4,5], exclusions, inclusions]);
   };
 
   /**
@@ -246,8 +262,8 @@
    * For example 4 workdays from Wed 19 Aug 2015 is 6 calendar days
    * workdays set is Mon-Fri, please use setWeekdaysToCalendarDays if you have a different set
    */
-  moment.fn.workdaysToCalendarDays = function(days, exclusions) {
-    var date = DaysSetConverter.calculateDate(this, [days, [1,2,3,4,5], exclusions]);
+  moment.fn.workdaysToCalendarDays = function(days, exclusions, inclusions) {
+    var date = DaysSetConverter.calculateDate(this, [days, [1,2,3,4,5], exclusions, inclusions]);
     return date.diff(this,'days');
   };
 
