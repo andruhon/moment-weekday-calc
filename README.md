@@ -23,7 +23,7 @@ moment().weekdayCalc({
   rangeStart: '1 Apr 2015',  
   rangeEnd: '31 Mar 2016',  
   weekdays: [1,2,3,4,5],  
-  exclusions: ['6 Apr 2015','7 Apr 2015']
+  exclusions: ['6 Apr 2015','7 Apr 2015'],
   inclusions: ['10 Apr 2015']
 }) //260
 ```
@@ -32,7 +32,7 @@ moment().isoWeekdayCalc({
   rangeStart: '1 Apr 2015',  
   rangeEnd: '31 Mar 2016',  
   weekdays: [1,2,3,4,5],  
-  exclusions: ['6 Apr 2015','7 Apr 2015']
+  exclusions: ['6 Apr 2015','7 Apr 2015'],
   inclusions: ['10 Apr 2015']
 }) //260
 ```
@@ -41,7 +41,7 @@ moment().weekdayCalc({
   rangeStart: '1 Apr 2015',  
   rangeEnd: '31 Mar 2016',  
   weekdays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],  
-  exclusions: ['6 Apr 2015','7 Apr 2015']  
+  exclusions: ['6 Apr 2015','7 Apr 2015'],
   inclusions: ['10 Apr 2015']
 }) //260 //It works, however it is recommended to use numerical weekdays
 ```
@@ -164,7 +164,7 @@ moment().isoWeekdayCalc({
   rangeStart: moment|Date|String, //optional  
   rangeEnd: moment|Date|String, //required  
   weekdays: weekdays Array, //required  
-  exclusions: exclusions Array //optional
+  exclusions: exclusions Array, //optional
   inclusions: inclusions Array //optional
 });
 ```
@@ -207,7 +207,7 @@ moment().weekdayCalc({
   rangeStart: moment|Date|String, //optional  
   rangeEnd: moment|Date|String, //required  
   weekdays: weekdays Array, //required  
-  exclusions: exclusions Array //optional
+  exclusions: exclusions Array, //optional
   inclusions: inclusions Array //optional
 });
 ```
@@ -255,7 +255,7 @@ moment(dateStart moment|Date|String).addWeekdaysFromSet(workdaysToAdd int, weekd
 moment(dateStart moment|Date|String).addWeekdaysFromSet({  
   'workdays': int, //required, it is also possible to use 'days' alias  
   'weekdays': weekdays Array, //optional  
-  'exclusions': exclusions Array //optional  
+  'exclusions': exclusions Array, //optional  
   'inclusions': inclusions Array //optional  
 });  
 ```
@@ -267,7 +267,7 @@ moment(dateStart moment|Date|String).isoAddWeekdaysFromSet(workdaysToAdd int, we
 moment(dateStart moment|Date|String).isoAddWeekdaysFromSet({  
   'workdays': int, //required, it is also possible to use 'days' alias  
   'weekdays': weekdays Array, //optional  
-  'exclusions': exclusions Array //optional  
+  'exclusions': exclusions Array, //optional  
   'inclusions': inclusions Array //optional  
 })  
 ```
@@ -279,7 +279,7 @@ moment(dateStart moment|Date|String).weekdaysFromSetToCalendarDays(workdaysToAdd
 moment(dateStart moment|Date|String).weekdaysFromSetToCalendarDays({  
   'workdays': int, //required, it is also possible to use 'days' alias  
   'weekdays': weekdays Array, //optional  
-  'exclusions': exclusions Array //optional  
+  'exclusions': exclusions Array, //optional  
   'inclusions': inclusions Array //optional  
 })  
 ```
@@ -291,7 +291,7 @@ moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays(workdaysTo
 moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays({  
   'workdays': int, //required, it is also possible to use 'days' alias  
   'weekdays': weekdays Array, //optional  
-  'exclusions': exclusions Array //optional  
+  'exclusions': exclusions Array, //optional  
   'inclusions': inclusions Array //optional  
 })  
 ```
