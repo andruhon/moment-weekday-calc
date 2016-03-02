@@ -91,7 +91,7 @@
         /* positive value - add days */
         while (daysLeft > 0) {
             resultDate.add(1, 'day');
-            var included = str_inclusions.length != 0 || str_inclusions.indexOf(resultDate.format("YYYY-MM-DD"))>=0;
+            var included = str_inclusions.length != 0 && str_inclusions.indexOf(resultDate.format("YYYY-MM-DD"))>=0;
             if (included || ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0))) {
                 daysLeft--;
             }
@@ -100,7 +100,7 @@
         /* negative value - subtract days */
         while (daysLeft < 0) {
             resultDate.subtract(1, 'day');
-            var included = str_inclusions.length != 0 || str_inclusions.indexOf(resultDate.format("YYYY-MM-DD"))>=0;
+            var included = str_inclusions.length != 0 && str_inclusions.indexOf(resultDate.format("YYYY-MM-DD"))>=0;
             if (included || ((this.weekdays.indexOf(resultDate[weekdayFunc]()) >= 0) && (str_exclusions.length == 0 || str_exclusions.indexOf(resultDate.format("YYYY-MM-DD")) < 0))) {
                 daysLeft++;
             }
