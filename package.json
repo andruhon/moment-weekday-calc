@@ -4,7 +4,8 @@
   "description": "Weekdays calculator: calculates number of days from the given set within the given diff. For example: calculate quantity of business days in 2015 financial year starting on 1 Apr 2015",
   "main": "./src/moment-weekday-calc",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha -R spec ./test/weekdaycalc_test.js"
+    "test": "node node_modules/mocha/bin/mocha -R spec ./test/weekdaycalc_test.js",
+    "build": "grunt"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "chai": "^2.2.0",
     "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha-test": "^0.12.7",
