@@ -56,6 +56,7 @@
   };
 
   Function.prototype.construct = function(aArgs) {
+    /*Monkey patching Function prototype to have construct method*/
     var fConstructor = this, fNewConstr = function() { fConstructor.apply(this, aArgs); };
     fNewConstr.prototype = fConstructor.prototype;
     return new fNewConstr();
@@ -83,7 +84,7 @@
    */
   DaysSetConverter.prototype.calculate = function(daysToAdd) {
     var daysLeft = daysToAdd;
-    var resultDate = this.rangeStart.clone();
+    var resultDate = this.rangeStart.clone();    
     var str_exclusions = parseSet(this.exclusions);
     var str_inclusions = parseSet(this.inclusions);
     var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
@@ -144,10 +145,11 @@
   };
 
   var parseSet = function(set) {
-    var str_exclusions = [];
+    var str_exclusions = [];    
     if (set) {
-      while(set.length>0) {
-        str_exclusions.push(moment(set.shift()).format("YYYY-MM-DD"));
+      var i=0, l = set.length;
+      for (;i<l;i++) {
+        str_exclusions.push(moment(set[i]).format("YYYY-MM-DD"));
       }
     }
     return str_exclusions;

@@ -18,23 +18,56 @@ describe('Sanity check', function(){
   });
 });
 
+describe('Mutations check', function(){ 
+    it('weekdaysFromSetToCalendarDays does not mutate weekdays and exclusions',function(){  
+        var excl = ['2015-10-01', '2015-10-02'];
+        var wdays = [3,4,5,6,7];
+        moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({
+          'workdays': -11,
+          'weekdays': wdays,
+          'exclusions': excl
+        }); 
+        expect(excl).to.not.be.a('undefined');
+        expect(excl.length).to.be.equal(2);
+        expect(excl).to.contain.all('2015-10-01','2015-10-02');
+        expect(wdays).to.not.be.a('undefined');
+        expect(wdays.length).to.be.equal(5);
+        expect(wdays).to.contain.all(3,4,5,6,7);
+    });
+
+    it('weekDayCalc does not mutate weekdays and exclusions', function(){
+        var excl = ['2015-10-01', '2015-10-02'];
+        var wdays = [3,4,5,6,7];
+        moment().isoWeekdayCalc({
+          rangeStart: [2015,9,25],
+          rangeEnd: [2015,10,20],
+          weekdays: wdays,
+          exclusions: excl
+        })
+        expect(excl).to.not.be.a('undefined');
+        expect(excl.length).to.be.equal(2);
+        expect(excl).to.contain.all('2015-10-01','2015-10-02');
+    })
+
+});
+
 //Please note that month are zero-based in these dates
 describe('isoWeekday WeekdayCalc tests', function(){
-  it('4 args',function(){
+  it('works with 4 args',function(){
     expect(moment().isoWeekdayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5],[[2015,6,6],[2015,6,7],[2015,6,1],[2015,11,26]])).to.equal(258);
   });
-  it('3 args',function(){
+  it('works with 3 args',function(){
     expect(moment().isoWeekdayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5])).to.equal(261);
     expect(moment().isoWeekdayCalc([2015,2,14],[2015,2,23],[5])).to.equal(1);
     expect(moment().isoWeekdayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5,6,7])).to.equal(365);
   });
-  it('2 args',function(){
+  it('works with 2 args',function(){
     expect(moment([2015,0,1]).isoWeekdayCalc([2015,11,31],[1,2,3,4,5])).to.equal(261);
   });
-  it('1 arg',function(){
+  it('works with 1 arg',function(){
     expect(moment([2015,0,1]).isoWeekdayCalc([1,2,3,4,5])).to.equal(261);
   });
-  it('1 object arg',function(){
+  it('works with 1 object arg',function(){
     expect(moment([2015,0,1]).isoWeekdayCalc({
       rangeEnd: [2015,11,31],
       weekdays: [1,2,3,4,5]
@@ -54,22 +87,22 @@ describe('isoWeekday WeekdayCalc tests', function(){
 });
 
 describe('Locale aware WeekdayCalc tests', function(){
-  it('4 args',function(){
+  it('works with 4 args',function(){
     expect(moment().weekdayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5],[[2015,6,6],[2015,6,7],[2015,6,1],[2015,11,26]])).to.equal(258);
   });
-  it('3 args',function(){
+  it('works with 3 args',function(){
     expect(moment().weekdayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5])).to.equal(261);
     expect(moment().weekdayCalc([2015,2,14],[2015,2,23],[5])).to.equal(1);
     expect(moment().weekdayCalc([2015,0,1],[2015,11,31],[0,1,2,3,4,5,6])).to.equal(365);
     expect(moment().weekdayCalc([2001,0,1],[2015,11,31],[0,1,2,3,4,5,6])).to.equal(5478);
   });
-  it('2 args',function(){
+  it('works with 2 args',function(){
     expect(moment([2015,0,1]).weekdayCalc([2015,11,31],[1,2,3,4,5])).to.equal(261);
   });
-  it('1 arg',function(){
+  it('works with 1 arg',function(){
     expect(moment([2015,0,1]).weekdayCalc([1,2,3,4,5])).to.equal(261);
   });
-  it('1 object arg',function(){
+  it('works with 1 object arg',function(){
     expect(moment([2015,0,1]).weekdayCalc({
       rangeEnd: [2015,11,31],
       weekdays: [1,2,3,4,5]
@@ -110,7 +143,7 @@ describe('Weekdays WeekdayCalc validation', function(){
 });
 
 describe('standalone WeekdayCalc test', function(){
-  it('3 args',function(){
+  it('works with 3 args',function(){
     var calc = new WeekDayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5],null,true);
     expect(calc.calculate()).to.equal(261);
   });
