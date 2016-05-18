@@ -1,6 +1,6 @@
 {
   "name": "moment-weekday-calc",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Weekdays calculator: calculates number of days from the given set within the given diff. For example: calculate quantity of business days in 2015 financial year starting on 1 Apr 2015",
   "main": "./src/moment-weekday-calc",
   "scripts": {
