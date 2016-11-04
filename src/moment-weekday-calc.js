@@ -68,7 +68,7 @@
   }
   WeekDayCalcException.prototype = new Error;
   WeekDayCalc.prototype.WeekDayCalcException = WeekDayCalcException;
-  
+
   function DaysSetConverter (rangeStart, weekdays, exclusions, inclusions, useIsoWeekday) {
     this.rangeStart = moment(rangeStart);
     this.useIsoWeekday = (useIsoWeekday==true);
@@ -84,7 +84,7 @@
    */
   DaysSetConverter.prototype.calculate = function(daysToAdd) {
     var daysLeft = daysToAdd;
-    var resultDate = this.rangeStart.clone();    
+    var resultDate = this.rangeStart.clone();
     var str_exclusions = parseSet(this.exclusions);
     var str_inclusions = parseSet(this.inclusions);
     var weekdayFunc = this.useIsoWeekday?'isoWeekday':'weekday';
@@ -145,7 +145,7 @@
   };
 
   var parseSet = function(set) {
-    var str_exclusions = [];    
+    var str_exclusions = [];
     if (set) {
       var i=0, l = set.length;
       for (;i<l;i++) {
@@ -155,28 +155,28 @@
     return str_exclusions;
   };
 
-  WeekDayCalc.calculateWeekdays = function(that, arguments, useIsoWeekday) {
+  WeekDayCalc.calculateWeekdays = function(that, inArgs, useIsoWeekday) {
     var rangeStart, rangeEnd, weekdays, exclusions, inclusions;
     useIsoWeekday = useIsoWeekday?true:false;
-    switch (arguments.length) {
+    switch (inArgs.length) {
       case 5:
-        exclusions = arguments[3];
-        inclusions = arguments[4];
+        exclusions = inArgs[3];
+        inclusions = inArgs[4];
       case 4:
-        exclusions = arguments[3];
+        exclusions = inArgs[3];
         /* Fall-through to three args */
       case 3:
-        rangeStart = moment(arguments[0]).startOf('day');
-        rangeEnd = moment(arguments[1]).endOf('day');
-        weekdays = arguments[2];
+        rangeStart = moment(inArgs[0]).startOf('day');
+        rangeEnd = moment(inArgs[1]).endOf('day');
+        weekdays = inArgs[2];
         break;
       case 2:
         rangeStart = that;
-        rangeEnd = arguments[0];
-        weekdays = arguments[1];
+        rangeEnd = inArgs[0];
+        weekdays = inArgs[1];
         break;
       case 1:
-        var arg = arguments[0];
+        var arg = inArgs[0];
         if (arg && arg.rangeEnd && arg.weekdays) {
           rangeStart = arg.rangeStart ? moment(arg.rangeStart).startOf('day') : that;
           rangeEnd = moment(arg.rangeEnd).endOf('day');
@@ -190,7 +190,7 @@
         }
         break;
       default:
-        new WeekDayCalcException('unexpected arguments length '+arguments.length+'. Expecting 1 to 4 args');
+        new WeekDayCalcException('unexpected arguments length '+inArgs.length+'. Expecting 1 to 4 args');
     }
     if(rangeStart.isAfter(rangeEnd)) {
       var trueEnd  = rangeStart.clone();
@@ -202,23 +202,23 @@
     return calc.calculate();
   };
 
-  DaysSetConverter.calculateDate = function(that, arguments, useIsoWeekday) {
+  DaysSetConverter.calculateDate = function(that, inArgs, useIsoWeekday) {
     var days, exclusions, inclusions, weekdaysSet;
     useIsoWeekday = useIsoWeekday?true:false;
     var rangeStart = that;
-    switch (arguments.length) {
+    switch (inArgs.length) {
       case 4:
-        exclusions = arguments[2];
-        inclusions = arguments[3];
+        exclusions = inArgs[2];
+        inclusions = inArgs[3];
       case 3:
-        exclusions = arguments[2];
+        exclusions = inArgs[2];
       /* Fall-through to two args*/
       case 2:
-        days = arguments[0];
-        weekdaysSet = arguments[1];
+        days = inArgs[0];
+        weekdaysSet = inArgs[1];
         break;
       case 1:
-        var arg = arguments[0];
+        var arg = inArgs[0];
         if (arg && (arg.days!=undefined || arg.workdays!=undefined) ) {
           if (arg.days!=undefined && arg.workdays!=undefined) throw new DaysSetConverterException("days and weekdays args should not be used together, because weekdays is an alias of days");
           days = arg.days?arg.days:arg.workdays;
@@ -230,7 +230,7 @@
         }
         break;
       default:
-        new DaysSetConverterException('unexpected arguments length '+arguments.length+'. Expecting 1 to 3 args');
+        new DaysSetConverterException('unexpected arguments length '+inArgs.length+'. Expecting 1 to 3 args');
     }
     var calc =  DaysSetConverter.construct([that, weekdaysSet, exclusions, inclusions, useIsoWeekday]);
     return calc.calculate(days);
