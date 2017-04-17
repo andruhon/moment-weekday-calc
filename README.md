@@ -129,16 +129,16 @@ require('moment-weekday-calc');
 console.log(moment().isoWeekdayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5,6,7]));
 ```
 
-#Installation
+# Installation
 
-##NPM
+## NPM
 ```npm install moment-weekday-calc```
 
 ##Bower
 ```bower install moment-weekday-calc```
 
 # Syntax
-##weekdayCalc
+## weekdayCalc
 ### iso weekdays weekdayCalc
 Calculate specified weekdays for dates range excluding particular dates:  
 ```JavaScript
