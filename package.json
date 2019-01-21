@@ -5,6 +5,7 @@
   "main": "./src/moment-weekday-calc",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha -R spec ./test/weekdaycalc_test.js",
+    "experiment": "node node_modules/mocha/bin/mocha -R spec ./test/get_dates_experiment.js",
     "build": "grunt"
   },
   "repository": {

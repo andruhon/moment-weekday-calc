@@ -39,6 +39,10 @@
   };
 
   WeekDayCalc.prototype.calculateIterative = function(rangeStart,rangeEnd,weekdays,exclusions, inclusions) {
+    return this.iterateRange(rangeStart,rangeEnd,weekdays,exclusions, inclusions, null);
+  };
+
+  WeekDayCalc.prototype.iterateRange = function(rangeStart,rangeEnd,weekdays,exclusions, inclusions, iterationCallback) {
     var weekDaysCount = 0, day = rangeStart.clone();
     var str_exclusions = parseSet(exclusions);
     var str_inclusions = parseSet(inclusions);
@@ -48,12 +52,15 @@
       var dayString = day.format("YYYY-MM-DD");
       var included = str_inclusions.length != 0 && str_inclusions.indexOf(dayString)>=0;
       if (included || ( (weekdays.indexOf(day[weekdayFunc]())>=0) && (str_exclusions.length==0 || str_exclusions.indexOf(dayString)<0) )) {
+        if(iterationCallback && typeof iterationCallback === 'function') {
+          iterationCallback(day.clone());
+        }
         weekDaysCount++;
       }
       day.add(1, 'day');
     }
     return weekDaysCount;
-  };
+  }
 
   Function.prototype.construct = function(aArgs) {
     /*Monkey patching Function prototype to have construct method*/
@@ -155,7 +162,7 @@
     return str_exclusions;
   };
 
-  WeekDayCalc.calculateWeekdays = function(that, inArgs, useIsoWeekday) {
+  WeekDayCalc.parseParameters = function(that, inArgs, useIsoWeekday) {
     var rangeStart, rangeEnd, weekdays, exclusions, inclusions;
     useIsoWeekday = useIsoWeekday?true:false;
     switch (inArgs.length) {
@@ -197,9 +204,21 @@
       rangeStart = rangeEnd.clone();
       rangeEnd = trueEnd;
     }
+    return [rangeStart, rangeEnd, weekdays, exclusions, inclusions, useIsoWeekday];
+  }
 
-    var calc =  WeekDayCalc.construct([rangeStart, rangeEnd, weekdays, exclusions, inclusions, useIsoWeekday]);
+  WeekDayCalc.calculateWeekdays = function(that, inArgs, useIsoWeekday) {
+    var calc =  WeekDayCalc.construct(WeekDayCalc.parseParameters(that, inArgs, useIsoWeekday));
     return calc.calculate();
+  };
+
+  WeekDayCalc.dateRangeToDates = function(that, inArgs, useIsoWeekday) {
+    var dates = [];
+    var calc =  WeekDayCalc.construct(WeekDayCalc.parseParameters(that, inArgs, useIsoWeekday));
+    calc.iterateRange(calc.rangeStart,calc.rangeEnd,calc.weekdays,calc.exclusions, calc.inclusions, function(day){
+      dates.push(day);
+    });
+    return dates;
   };
 
   DaysSetConverter.calculateDate = function(that, inArgs, useIsoWeekday) {
@@ -285,6 +304,14 @@
   moment.fn.isoWeekdaysFromSetToCalendarDays = function() {
     var date = DaysSetConverter.calculateDate(this, arguments, true);
     return date.diff(this,'days');
+  };
+
+  moment.fn.dateRangeToDates = function() {
+    return WeekDayCalc.dateRangeToDates(this, arguments);
+  };
+
+  moment.fn.dateRangeToDatesIso = function() {
+    return WeekDayCalc.dateRangeToDates(this, arguments, true);
   };
 
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = WeekDayCalc :

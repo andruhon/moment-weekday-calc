@@ -18,15 +18,15 @@ describe('Sanity check', function(){
   });
 });
 
-describe('Mutations check', function(){ 
-    it('weekdaysFromSetToCalendarDays does not mutate weekdays and exclusions',function(){  
+describe('Mutations check', function(){
+    it('weekdaysFromSetToCalendarDays does not mutate weekdays and exclusions',function(){
         var excl = ['2015-10-01', '2015-10-02'];
         var wdays = [3,4,5,6,7];
         moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({
           'workdays': -11,
           'weekdays': wdays,
           'exclusions': excl
-        }); 
+        });
         expect(excl).to.not.be.a('undefined');
         expect(excl.length).to.be.equal(2);
         expect(excl).to.contain.all('2015-10-01','2015-10-02');
@@ -130,13 +130,13 @@ describe('Weekdays WeekdayCalc validation', function(){
   });
   it('Out of range',function(){
     var except = function(){
-      return new WeekDayCalc([2015,0,1],[2015,11,31],[-1],null,true);
+      return new WeekDayCalc([2015,0,1],[2015,11,31],[-1],null,null,true);
     };
     expect(except).to.throw(/weekday is out of/);
   });
   it('Start after end',function(){
     var except = function(){
-      return new WeekDayCalc([2015,0,1],[2014,11,31],[1,2,3,4,5],null,true);
+      return new WeekDayCalc([2015,0,1],[2014,11,31],[1,2,3,4,5],null,null,true);
     };
     expect(except).to.throw(/rangeStart is after rangeEnd/);
   });
@@ -144,7 +144,7 @@ describe('Weekdays WeekdayCalc validation', function(){
 
 describe('standalone WeekdayCalc test', function(){
   it('works with 3 args',function(){
-    var calc = new WeekDayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5],null,true);
+    var calc = new WeekDayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5]);
     expect(calc.calculate()).to.equal(261);
   });
 });
@@ -246,4 +246,3 @@ describe('DaysSetConverter validation', function() {
     expect(except).to.throw(/days and weekdays args should not be used together/);
   });
 });
-
