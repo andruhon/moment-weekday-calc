@@ -300,7 +300,7 @@ moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays({
 
 Get an array of dates:
 ```JavaScript
-moment().weekdayCalc({
+moment().dateRangeToDates({
   rangeStart: [2017,10,2],
   rangeEnd: [2018,1,21],
   weekdays: [1,2,3,4,5]
