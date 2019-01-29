@@ -18,15 +18,15 @@ describe('Sanity check', function(){
   });
 });
 
-describe('Mutations check', function(){ 
-    it('weekdaysFromSetToCalendarDays does not mutate weekdays and exclusions',function(){  
+describe('Mutations check', function(){
+    it('weekdaysFromSetToCalendarDays does not mutate weekdays and exclusions',function(){
         var excl = ['2015-10-01', '2015-10-02'];
         var wdays = [3,4,5,6,7];
         moment('2015-10-05').isoWeekdaysFromSetToCalendarDays({
           'workdays': -11,
           'weekdays': wdays,
           'exclusions': excl
-        }); 
+        });
         expect(excl).to.not.be.a('undefined');
         expect(excl.length).to.be.equal(2);
         expect(excl).to.contain.all('2015-10-01','2015-10-02');
@@ -130,13 +130,13 @@ describe('Weekdays WeekdayCalc validation', function(){
   });
   it('Out of range',function(){
     var except = function(){
-      return new WeekDayCalc([2015,0,1],[2015,11,31],[-1],null,true);
+      return new WeekDayCalc([2015,0,1],[2015,11,31],[-1],null,null,true);
     };
     expect(except).to.throw(/weekday is out of/);
   });
   it('Start after end',function(){
     var except = function(){
-      return new WeekDayCalc([2015,0,1],[2014,11,31],[1,2,3,4,5],null,true);
+      return new WeekDayCalc([2015,0,1],[2014,11,31],[1,2,3,4,5],null,null,true);
     };
     expect(except).to.throw(/rangeStart is after rangeEnd/);
   });
@@ -144,7 +144,7 @@ describe('Weekdays WeekdayCalc validation', function(){
 
 describe('standalone WeekdayCalc test', function(){
   it('works with 3 args',function(){
-    var calc = new WeekDayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5],null,true);
+    var calc = new WeekDayCalc([2015,0,1],[2015,11,31],[1,2,3,4,5]);
     expect(calc.calculate()).to.equal(261);
   });
 });
@@ -247,3 +247,21 @@ describe('DaysSetConverter validation', function() {
   });
 });
 
+describe('Get an array of dates', function(){
+  it('try dates list',function(){
+    var datesCount = moment().weekdayCalc({
+      rangeStart: [2017,10,2],
+      rangeEnd: [2018,1,21],
+      weekdays: [1,2,3,4,5]
+    });
+    var dates = moment().dateRangeToDates({
+      rangeStart: [2017,10,2],
+      rangeEnd: [2018,1,21],
+      weekdays: [1,2,3,4,5]
+    });
+    expect(dates.length).to.equal(datesCount);
+    expect(dates.map(function(d){return d.format("YYYY-MM-DD")})).to.deep.equal([
+      "2017-11-02", "2017-11-03", "2017-11-06", "2017-11-07", "2017-11-08", "2017-11-09", "2017-11-10", "2017-11-13", "2017-11-14", "2017-11-15", "2017-11-16", "2017-11-17", "2017-11-20", "2017-11-21", "2017-11-22", "2017-11-23", "2017-11-24", "2017-11-27", "2017-11-28", "2017-11-29", "2017-11-30", "2017-12-01", "2017-12-04", "2017-12-05", "2017-12-06", "2017-12-07", "2017-12-08", "2017-12-11", "2017-12-12", "2017-12-13", "2017-12-14", "2017-12-15", "2017-12-18", "2017-12-19", "2017-12-20", "2017-12-21", "2017-12-22", "2017-12-25", "2017-12-26", "2017-12-27", "2017-12-28", "2017-12-29", "2018-01-01", "2018-01-02", "2018-01-03", "2018-01-04", "2018-01-05", "2018-01-08", "2018-01-09", "2018-01-10", "2018-01-11", "2018-01-12", "2018-01-15", "2018-01-16", "2018-01-17", "2018-01-18", "2018-01-19", "2018-01-22", "2018-01-23", "2018-01-24", "2018-01-25", "2018-01-26", "2018-01-29", "2018-01-30", "2018-01-31", "2018-02-01", "2018-02-02", "2018-02-05", "2018-02-06", "2018-02-07", "2018-02-08", "2018-02-09", "2018-02-12", "2018-02-13", "2018-02-14", "2018-02-15", "2018-02-16", "2018-02-19", "2018-02-20", "2018-02-21"
+    ]);
+  });
+});

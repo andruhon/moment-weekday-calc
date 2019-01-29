@@ -61,7 +61,7 @@ moment('14 Feb 2014').isoWeekdayCalc('23 Feb 2014',[5]); //2
 ```
 
 It is also **possible to subtract** days with all "add" functions by passing a negative value.  
-  
+
 Calculate when is it 5 business days from now:  
 ```JavaScript
 moment().addWorkdays(5); //Will find a date within 5 business days from now  
@@ -295,6 +295,15 @@ moment(dateStart moment|Date|String).isoWeekdaysFromSetToCalendarDays({
   'weekdays': weekdays Array, //optional  
   'exclusions': exclusions Array, //optional  
   'inclusions': inclusions Array //optional  
+})  
+```
+
+Get an array of dates:
+```JavaScript
+moment().dateRangeToDates({
+  rangeStart: [2017,10,2],
+  rangeEnd: [2018,1,21],
+  weekdays: [1,2,3,4,5]
 })  
 ```
 
