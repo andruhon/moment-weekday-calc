@@ -27,14 +27,14 @@
   },
   "homepage": "https://github.com/andruhon/moment-weekday-calc",
   "devDependencies": {
-    "chai": "^2.2.0",
-    "grunt": "^0.4.5",
-    "grunt-cli": "^0.1.13",
-    "grunt-contrib-uglify": "^0.9.1",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-mocha-test": "^0.12.7",
-    "mocha": "^2.2.4",
-    "moment": "^2.16.0"
+    "chai": "^4.2.0",
+    "grunt": "^1.0.3",
+    "grunt-cli": "^1.3.0",
+    "grunt-contrib-uglify": "^4.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-mocha-test": "^0.13.3",
+    "mocha": "^5.2.0",
+    "moment": "^2.24.0"
   },
   "peerDependencies": {
     "moment": ">=2.10.2"

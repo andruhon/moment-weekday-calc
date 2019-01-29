@@ -29,10 +29,10 @@ describe('Mutations check', function(){
         });
         expect(excl).to.not.be.a('undefined');
         expect(excl.length).to.be.equal(2);
-        expect(excl).to.contain.all('2015-10-01','2015-10-02');
+        expect(excl).to.include.members(['2015-10-01','2015-10-02']);
         expect(wdays).to.not.be.a('undefined');
         expect(wdays.length).to.be.equal(5);
-        expect(wdays).to.contain.all(3,4,5,6,7);
+        expect(wdays).to.include.members([3,4,5,6,7]);
     });
 
     it('weekDayCalc does not mutate weekdays and exclusions', function(){
@@ -46,7 +46,7 @@ describe('Mutations check', function(){
         })
         expect(excl).to.not.be.a('undefined');
         expect(excl.length).to.be.equal(2);
-        expect(excl).to.contain.all('2015-10-01','2015-10-02');
+        expect(excl).to.include.members(['2015-10-01','2015-10-02']);
     })
 
 });
