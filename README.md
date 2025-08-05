@@ -1,5 +1,7 @@
 # Not Maintained
-This repository is archived. Feel free to fork or rebuild to support date libraries other than Moment, JS Temporal is a new baseline when you're reading this (https://developer.mozilla.org/en-US/blog/javascript-temporal-is-coming/)
+This repository is archived. Feel free to fork or rebuild to support date libraries other than Moment.
+
+Hopefully JS Temporal is a new baseline when you're reading this (https://developer.mozilla.org/en-US/blog/javascript-temporal-is-coming/)
 
 
 # Moment Weekday Calculator plugin
