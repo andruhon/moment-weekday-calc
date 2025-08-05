@@ -1,4 +1,6 @@
-[![Build Status](https://api.travis-ci.org/andruhon/moment-weekday-calc.svg?branch=master)](http://travis-ci.org/andruhon/moment-weekday-calc)
+# Not Maintained
+This repository is archived. Feel free to fork or rebuild to support date libraries other than Moment, JS Temporal is a new baseline when you're reading this (https://developer.mozilla.org/en-US/blog/javascript-temporal-is-coming/)
+
 
 # Moment Weekday Calculator plugin
 This plugin will count specific weekdays in the range, calculate how many calendar days in given amount workdays/business days and when is it N working days from now
